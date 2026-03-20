@@ -1,0 +1,31 @@
+name: C Build and Test
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sqlite3 libsqlite3-dev lcov libcunit1 libcunit1-dev
+    
+    - name: Create data directory
+      run: mkdir -p data
+    
+    - name: Initialize database
+      run: sqlite3 data/greenhouse.db < data/schema.sql
+    
+    - name: Build with Make
+      run: make
+    
+    - name: Run tests
+      run: make test

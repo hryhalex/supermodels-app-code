@@ -55,4 +55,4 @@
 - [Репозиторий с кодом](https://github.com/hryhalex/supermodels-app-code)
 - [Wiki первого репозитория](https://github.com/fpmi-tpmp2026/tpmp-gr12a-lab4-supermodels/wiki)
 - [Курс по github pages Кудинова Елизавета](https://github.com/luvlizzie/github-pages-course)
-- [Курс по github pages Григорьева Александра](https://github.com/hryhalex/skills-github-pages))
+- [Курс по github pages Григорьева Александра](https://github.com/hryhalex/skills-github-pages)

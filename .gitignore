@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.out
+*.app
+
+# Build directories
+bin/
+obj/
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage
+*.gcda
+*.gcno
+*.gcov
+coverage.info

@@ -45,10 +45,10 @@ CREATE TABLE IF NOT EXISTS users (
     role TEXT NOT NULL
 );
 
--- Добавление тестовых данных
+-- Добавление тестовых данных (с проверкой на существование)
 
 -- Растения
-INSERT INTO plants (name, variety, price_per_unit) VALUES 
+INSERT OR IGNORE INTO plants (name, variety, price_per_unit) VALUES 
 ('Роза', 'Чайная', 7.0),
 ('Роза', 'Плетистая', 8.5),
 ('Тюльпан', 'Красный', 3.5),
@@ -57,34 +57,38 @@ INSERT INTO plants (name, variety, price_per_unit) VALUES
 ('Хризантема', 'Кустовая', 4.0);
 
 -- Композиции
-INSERT INTO compositions (name) VALUES 
+INSERT OR IGNORE INTO compositions (name) VALUES 
 ('Букет невесты'),
 ('Классический букет'),
 ('Весеннее настроение');
 
 -- Состав композиций
--- Букет невесты
-INSERT INTO composition_plants (composition_id, plant_id, quantity) VALUES 
-(1, 1, 5),  -- 5 чайных роз
-(1, 5, 2);  -- 2 белые лилии
+-- Букет невесты (id=1)
+INSERT OR IGNORE INTO composition_plants (composition_id, plant_id, quantity) 
+SELECT 1, id, 5 FROM plants WHERE name = 'Роза' AND variety = 'Чайная';
+INSERT OR IGNORE INTO composition_plants (composition_id, plant_id, quantity) 
+SELECT 1, id, 2 FROM plants WHERE name = 'Лилия' AND variety = 'Белая';
 
--- Классический букет
-INSERT INTO composition_plants (composition_id, plant_id, quantity) VALUES 
-(2, 1, 3),  -- 3 чайные розы
-(2, 2, 2);  -- 2 плетистые розы
+-- Классический букет (id=2)
+INSERT OR IGNORE INTO composition_plants (composition_id, plant_id, quantity) 
+SELECT 2, id, 3 FROM plants WHERE name = 'Роза' AND variety = 'Чайная';
+INSERT OR IGNORE INTO composition_plants (composition_id, plant_id, quantity) 
+SELECT 2, id, 2 FROM plants WHERE name = 'Роза' AND variety = 'Плетистая';
 
--- Весеннее настроение
-INSERT INTO composition_plants (composition_id, plant_id, quantity) VALUES 
-(3, 3, 5),  -- 5 красных тюльпанов
-(3, 4, 5);  -- 5 жёлтых тюльпанов
+-- Весеннее настроение (id=3)
+INSERT OR IGNORE INTO composition_plants (composition_id, plant_id, quantity) 
+SELECT 3, id, 5 FROM plants WHERE name = 'Тюльпан' AND variety = 'Красный';
+INSERT OR IGNORE INTO composition_plants (composition_id, plant_id, quantity) 
+SELECT 3, id, 5 FROM plants WHERE name = 'Тюльпан' AND variety = 'Жёлтый';
 
 -- Пользователи
-INSERT INTO users (username, password_hash, role) VALUES 
-('admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin'),  -- admin
-('manager', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'manager'); -- 123456
+INSERT OR IGNORE INTO users (username, password_hash, role) VALUES 
+('admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin'),
+('manager', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'manager'),
+('customer', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'customer');
 
 -- Заказы
-INSERT INTO orders (customer_name, composition_name, quantity, order_date, completion_date, status) VALUES 
+INSERT OR IGNORE INTO orders (customer_name, composition_name, quantity, order_date, completion_date, status) VALUES 
 ('Иванова А.А.', 'Букет невесты', 1, '2025-03-15', '2025-03-16', 'completed'),
 ('Петров Б.Б.', 'Классический букет', 2, '2025-03-17', NULL, 'pending'),
 ('Сидорова В.В.', 'Весеннее настроение', 1, '2025-03-18', NULL, 'urgent');

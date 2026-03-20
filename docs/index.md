@@ -39,7 +39,7 @@
 ### Статус сборки
 [![C Build and Test](https://github.com/hryhalex/supermodels-app-code/actions/workflows/ci.yml/badge.svg)](https://github.com/hryhalex/supermodels-app-code/actions/workflows/ci.yml)
 
----
+--- 
 
 ### Документация
 - [README](https://github.com/hryhalex/supermodels-app-code/blob/main/README.md)

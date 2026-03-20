@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 // Константы
-#define DB_PATH "data/florist.db"
+#define DB_PATH "data/greenhouse.db"
 
 // Инициализация и закрытие
 int db_init(sqlite3 **db);

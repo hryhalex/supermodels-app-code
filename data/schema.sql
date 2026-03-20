@@ -1,5 +1,6 @@
 -- База данных "Цветочная оранжерея"
 -- Вариант 8
+-- Файл: greenhouse.db
 
 -- Таблица растений
 CREATE TABLE IF NOT EXISTS plants (

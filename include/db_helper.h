@@ -1,6 +1,10 @@
 #ifndef DB_HELPER_H
 #define DB_HELPER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <sqlite3.h>
 #include <stdbool.h>
 
@@ -26,5 +30,9 @@ void db_print_error(const char *operation, const char *error_msg);
 
 // Проверка целостности БД
 int db_check_integrity(sqlite3 *db);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

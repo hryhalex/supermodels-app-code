@@ -1,6 +1,10 @@
 #ifndef ORDER_H
 #define ORDER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <sqlite3.h>
 
 typedef struct {
@@ -25,5 +29,9 @@ int order_get_by_customer(sqlite3 *db, const char *customer, Order **orders, int
 int order_get_by_date_range(sqlite3 *db, const char *start_date, const char *end_date, Order **orders, int *count);
 int order_complete(sqlite3 *db, int id, const char *completion_date);
 void order_free_list(Order *orders, int count);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,6 +1,10 @@
 #ifndef AUTH_H
 #define AUTH_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <sqlite3.h>
 #include <stdbool.h>
 
@@ -24,5 +28,9 @@ bool auth_check_role(const User *user, const char *required_role);
 
 // Вспомогательные функции для хеширования
 void auth_hash_password(const char *password, char *hash, size_t hash_size);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

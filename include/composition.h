@@ -1,6 +1,10 @@
 #ifndef COMPOSITION_H
 #define COMPOSITION_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <sqlite3.h>
 #include "plant.h"
 
@@ -32,5 +36,9 @@ int composition_add_plant(sqlite3 *db, int comp_id, int plant_id, int quantity);
 int composition_get_plants(sqlite3 *db, int comp_id, CompositionPlant **plants, int *count);
 int composition_remove_plant(sqlite3 *db, int comp_id, int plant_id);
 int composition_get_total_price(sqlite3 *db, int comp_id, double *total_price);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -10,7 +10,8 @@ int plant_create_table(sqlite3 *db) {
                       "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                       "name TEXT NOT NULL,"
                       "variety TEXT NOT NULL,"
-                      "price_per_unit REAL NOT NULL);";
+                      "price_per_unit REAL NOT NULL,"
+                      "image_path TEXT);";
     
     int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
     if (rc != SQLITE_OK) {

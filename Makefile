@@ -8,10 +8,17 @@ LDFLAGS = -lsqlite3 -lm
 OPENSSL_INCLUDE = -I/opt/homebrew/opt/openssl@3/include
 OPENSSL_LIB = -L/opt/homebrew/opt/openssl@3/lib -lssl -lcrypto
 
-# Google Test (локальная установка)
-GTEST_DIR = /Users/kudinovaea2006yandex.by/Documents/googletest
-GTEST_INCLUDE = -I$(GTEST_DIR)/googletest/include
-GTEST_LIB = -L$(GTEST_DIR)/build/lib -lgtest -lgtest_main -pthread
+# Google Test (универсальные пути)
+ifneq ($(wildcard /usr/include/gtest/gtest.h),)
+    GTEST_INCLUDE = -I/usr/include
+    GTEST_LIB = -L/usr/lib -lgtest -lgtest_main -pthread
+else ifneq ($(wildcard /opt/homebrew/include/gtest/gtest.h),)
+    GTEST_INCLUDE = -I/opt/homebrew/include
+    GTEST_LIB = -L/opt/homebrew/lib -lgtest -lgtest_main -pthread
+else
+    GTEST_INCLUDE = -I$(HOME)/Documents/googletest/googletest/include
+    GTEST_LIB = -L$(HOME)/Documents/googletest/build/lib -lgtest -lgtest_main -pthread
+endif
 
 SRCDIR = src
 OBJDIR = obj

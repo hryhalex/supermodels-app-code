@@ -11,10 +11,6 @@ protected:
         sqlite3_open(":memory:", &db);
         plant_create_table(db);
         composition_create_table(db);
-        
-        // Добавляем тестовое растение
-        Plant p = {0, "ТестРоза", "ТестСорт", 10.0};
-        plant_add(db, &p);
     }
     
     void TearDown() override {
@@ -46,16 +42,19 @@ TEST_F(CompositionTest, GetAllCompositions) {
 }
 
 TEST_F(CompositionTest, AddPlantToComposition) {
-    Plant *plants = NULL;
-    int count = 0;
-    plant_get_all(db, &plants, &count);
-    ASSERT_GT(count, 0);
+    // Сначала добавляем растение
+    Plant p = {0, "ТестРозаДляКомпозиции", "ТестСорт", 10.0, ""};
+    int rc = plant_add(db, &p);
+    ASSERT_EQ(rc, SQLITE_OK);
+    ASSERT_NE(p.id, 0);
     
+    // Добавляем композицию
     Composition c = {0, "КомпДляТеста"};
-    composition_add(db, &c);
+    rc = composition_add(db, &c);
+    ASSERT_EQ(rc, SQLITE_OK);
+    ASSERT_NE(c.id, 0);
     
-    int rc = composition_add_plant(db, c.id, plants[0].id, 5);
+    // Добавляем растение в композицию
+    rc = composition_add_plant(db, c.id, p.id, 5);
     EXPECT_EQ(rc, SQLITE_OK);
-    
-    plant_free_list(plants, count);
 }

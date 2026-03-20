@@ -17,17 +17,19 @@ protected:
 };
 
 TEST_F(PlantTest, AddPlant) {
-    Plant p = {0, "Роза", "Чайная", 7.0};
+    Plant p = {0, "Роза", "Чайная", 7.0, ""};
     int rc = plant_add(db, &p);
     EXPECT_EQ(rc, SQLITE_OK);
     EXPECT_NE(p.id, 0);
 }
 
 TEST_F(PlantTest, GetAllPlants) {
-    Plant p1 = {0, "Роза1", "Сорт1", 10.0};
-    Plant p2 = {0, "Роза2", "Сорт2", 15.0};
-    plant_add(db, &p1);
-    plant_add(db, &p2);
+    Plant p1 = {0, "Роза1", "Сорт1", 10.0, ""};
+    Plant p2 = {0, "Роза2", "Сорт2", 15.0, ""};
+    int rc1 = plant_add(db, &p1);
+    int rc2 = plant_add(db, &p2);
+    ASSERT_EQ(rc1, SQLITE_OK);
+    ASSERT_EQ(rc2, SQLITE_OK);
     
     Plant *plants = NULL;
     int count = 0;
@@ -40,7 +42,7 @@ TEST_F(PlantTest, GetAllPlants) {
 }
 
 TEST_F(PlantTest, GetPlantById) {
-    Plant p = {0, "ТестРоза", "ТестСорт", 20.0};
+    Plant p = {0, "ТестРоза", "ТестСорт", 20.0, ""};
     plant_add(db, &p);
     
     Plant found;

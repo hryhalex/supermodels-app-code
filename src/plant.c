@@ -45,7 +45,7 @@ int plant_add(sqlite3 *db, const Plant *plant) {
 
 int plant_get_all(sqlite3 *db, Plant **plants, int *count) {
     sqlite3_stmt *stmt;
-    const char *sql = "SELECT id, name, variety, price_per_unit FROM plants";
+    const char *sql = "SELECT id, name, variety, price_per_unit, image_path FROM plants";
     
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
     if (rc != SQLITE_OK) return rc;
@@ -64,6 +64,14 @@ int plant_get_all(sqlite3 *db, Plant **plants, int *count) {
         strcpy(list[*count].name, (const char*)sqlite3_column_text(stmt, 1));
         strcpy(list[*count].variety, (const char*)sqlite3_column_text(stmt, 2));
         list[*count].price_per_unit = sqlite3_column_double(stmt, 3);
+        
+        const char *img = (const char*)sqlite3_column_text(stmt, 4);
+        if (img) {
+            strcpy(list[*count].image_path, img);
+        } else {
+            list[*count].image_path[0] = '\0';
+        }
+        
         (*count)++;
     }
     

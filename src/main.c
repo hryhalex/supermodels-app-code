@@ -138,15 +138,16 @@ void show_all_plants(sqlite3 *db) {
     }
     
     printf("\n=== Растения ===\n");
-    printf("%-4s %-20s %-15s %-10s\n", "ID", "Название", "Сорт", "Цена (BYN)");
-    printf("--------------------------------------------------------\n");
+    printf("%-4s %-20s %-15s %-10s %-30s\n", "ID", "Название", "Сорт", "Цена (BYN)", "Изображение");
+    printf("--------------------------------------------------------------------------------\n");
     
     for (int i = 0; i < count; i++) {
-        printf("%-4d %-20s %-15s %-10.2f\n", 
+        printf("%-4d %-20s %-15s %-10.2f %-30s\n", 
                plants[i].id, 
                plants[i].name, 
                plants[i].variety, 
-               plants[i].price_per_unit);
+               plants[i].price_per_unit,
+               plants[i].image_path[0] ? plants[i].image_path : "нет фото");
     }
     
     plant_free_list(plants, count);

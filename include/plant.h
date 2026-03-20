@@ -12,6 +12,7 @@ typedef struct {
     char name[50];
     char variety[50];
     double price_per_unit;
+    char image_path[200];
 } Plant;
 
 // Прототипы функций

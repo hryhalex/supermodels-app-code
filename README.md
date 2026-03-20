@@ -101,7 +101,7 @@ make clean
 ## Project Structure
 ```text
 supermodels-app-code/
-├─.github/workflows/       # GitHub Actions
+├── .github/workflows/       # GitHub Actions
 ├── bin/                  # Исполняемые файлы
 ├── data/                 # База данных SQLite
 ├── include/              # Заголовочные файлы

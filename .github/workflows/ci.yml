@@ -1,0 +1,46 @@
+name: C Build and Test
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sqlite3 libsqlite3-dev lcov cmake build-essential
+    
+    - name: Install Google Test
+      run: |
+        cd /tmp
+        git clone https://github.com/google/googletest.git
+        cd googletest
+        mkdir build && cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+        make
+        sudo make install
+    
+    - name: Verify Google Test installation
+      run: |
+        ls /usr/include/gtest/ || echo "gtest not found in /usr/include"
+        ls /usr/lib/libgtest* || echo "gtest lib not found"
+    
+    - name: Create data directory
+      run: mkdir -p data
+    
+    - name: Initialize database
+      run: sqlite3 data/greenhouse.db < data/schema.sql
+    
+    - name: Build with Make
+      run: make
+    
+    - name: Run tests
+      run: make test

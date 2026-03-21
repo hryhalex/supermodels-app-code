@@ -30,7 +30,7 @@ TARGET = $(BINDIR)/Greenhouse.exe
 
 # Тесты
 TEST_SOURCES = $(wildcard tests_gtest/test_*.cpp)
-TEST_OBJECTS = $(patsubst tests_gtest/%.cpp, $(OBJDIR)/%.o, $(TEST_SOURCES))
+TEST_OBJECTS = $(patsubst tests_gtest/%.cpp, $(OBJDIR)/test_%.o, $(TEST_SOURCES))
 TEST_TARGET = $(BINDIR)/run_tests
 
 all: $(TARGET)
@@ -41,11 +41,15 @@ $(TARGET): $(OBJECTS) | $(BINDIR)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) $(OPENSSL_INCLUDE) -c $< -o $@
 
+# Сборка и запуск тестов
 $(TEST_TARGET): $(TEST_OBJECTS) $(filter-out $(OBJDIR)/main.o, $(OBJECTS)) | $(BINDIR)
 	$(CXX) $^ -o $(TEST_TARGET) $(GTEST_LIB) $(LDFLAGS) $(OPENSSL_LIB)
 
-$(OBJDIR)/%.o: tests_gtest/%.cpp | $(OBJDIR)
+$(OBJDIR)/test_%.o: tests_gtest/%.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDE) $(OPENSSL_INCLUDE) -c $< -o $@
+
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
 
 $(BINDIR):
 	mkdir -p $(BINDIR)
@@ -59,12 +63,16 @@ clean:
 run: $(TARGET)
 	./$(TARGET)
 
-test: $(TEST_TARGET)
-	./$(TEST_TARGET)
-
-coverage:
+coverage-test: clean
+	mkdir -p obj
 	$(CC) $(CFLAGS) $(OPENSSL_INCLUDE) -fprofile-arcs -ftest-coverage -c src/*.c
-	$(CXX) *.o -o $(TEST_TARGET) $(GTEST_LIB) $(LDFLAGS) $(OPENSSL_LIB) -lgcov
+	mv *.o obj/
+	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDE) $(OPENSSL_INCLUDE) -fprofile-arcs -ftest-coverage -c tests_gtest/*.cpp
+	mv *.o obj/
+	$(CXX) obj/*.o -o $(TEST_TARGET) $(GTEST_LIB) $(LDFLAGS) $(OPENSSL_LIB) --coverage
 	./$(TEST_TARGET)
+	lcov --directory . --capture --output-file coverage.info --ignore-errors inconsistent
+	lcov --remove coverage.info '/usr/*' '/opt/homebrew/*' 'tests_gtest/*' 'src/main.c' --output-file coverage.info --ignore-errors unused
+	lcov --list coverage.info
 
-.PHONY: all clean run test coverage
+.PHONY: all clean run test coverage-test

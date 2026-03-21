@@ -109,5 +109,6 @@ supermodels-app-code/
 ├── tests_gtest/          # Unit-тесты
 ├── images/               # Фотографии растений
 ├── Makefile              # Сборка
+├── coverage_src.info     # Технический файл о покрытии тестами
 └── README.md
 ```
